@@ -1,4 +1,5 @@
 # Created by Joel Eisner 2/08/16
+# Modified by Diskutant 
 
 # 12 Hour Format: "date +%-I,%M,%-S"
 # 24 Hour Format: "date +%-H,%M,%-S"
@@ -12,11 +13,19 @@ render: () -> """
     <div class="container">
         <div class="col col-1">
             <div class="row row-1"></div>
-            <div class="row row-2"></div>
+            <div class="row row-2">
+                <div class="dot"></div>
+            </div>
             <div class="row row-3">
                 <div class="dot"></div>
             </div>
             <div class="row row-4">
+                <div class="dot"></div>
+            </div>
+            <div class="row row-5">
+                <div class="dot"></div>
+            </div>
+            <div class="row row-6">
                 <div class="dot"></div>
             </div>
         </div>
@@ -33,21 +42,15 @@ render: () -> """
             <div class="row row-4">
                 <div class="dot"></div>
             </div>
+            <div class="row row-5">
+                <div class="dot"></div>
+            </div>
+            <div class="row row-6">
+                <div class="dot"></div>
+            </div>
         </div>
         <div class="col col-3">
-            <div class="row row-1"></div>
-            <div class="row row-2">
-                <div class="dot"></div>
-            </div>
-            <div class="row row-3">
-                <div class="dot"></div>
-            </div>
-            <div class="row row-4">
-                <div class="dot"></div>
-            </div>
-        </div>
-        <div class="col col-4">
-            <div class="row row-1">
+               <div class="row row-1">
                 <div class="dot"></div>
             </div>
             <div class="row row-2">
@@ -59,30 +62,10 @@ render: () -> """
             <div class="row row-4">
                 <div class="dot"></div>
             </div>
-        </div>
-        <div class="col col-5">
-            <div class="row row-1"></div>
-            <div class="row row-2">
+            <div class="row row-5">
                 <div class="dot"></div>
             </div>
-            <div class="row row-3">
-                <div class="dot"></div>
-            </div>
-            <div class="row row-4">
-                <div class="dot"></div>
-            </div>
-        </div>
-        <div class="col col-6">
-            <div class="row row-1">
-                <div class="dot"></div>
-            </div>
-            <div class="row row-2">
-                <div class="dot"></div>
-            </div>
-            <div class="row row-3">
-                <div class="dot"></div>
-            </div>
-            <div class="row row-4">
+            <div class="row row-6">
                 <div class="dot"></div>
             </div>
         </div>
@@ -94,86 +77,39 @@ update: (output, domEl) ->
     hours = parseInt time[0]
     minutes = parseInt time[1]
     seconds = parseInt time[2]
-    sepDig = (num, pos) ->
-        stringNum = num.toString()
-        newInt = stringNum.charAt pos
-        parseInt newInt
-    # Format Hours
-    if hours < 10
-        hPos1 = 0
-        hPos2 = sepDig(hours, 0)
-    else
-        hPos1 = sepDig(hours, 0)
-        hPos2 = sepDig(hours, 1)
-    # Format Minutes
-    if minutes < 10
-        mPos1 = 0
-        mPos2 = sepDig(minutes, 0)
-    else
-        mPos1 = sepDig(minutes, 0)
-        mPos2 = sepDig(minutes, 1)
-    # Format Seconds
-    if seconds < 10
-        sPos1 = 0
-        sPos2 = sepDig(seconds, 0)
-    else
-        sPos1 = sepDig(seconds, 0)
-        sPos2 = sepDig(seconds, 1)
+    
     # Fill dots function
     fillDots = (el, num) ->
-        if num is 0
-            el.find('.dot').removeClass 'fill'
-        else if num is 1
-            el.find('.row').not('.row-4').find('.dot').removeClass 'fill'
-            el.find('.row-4').find('.dot').addClass 'fill'
-        else if num is 2
-            el.find('.row').not('.row-3').find('.dot').removeClass 'fill'
-            el.find('.row-3').find('.dot').addClass 'fill'
-        else if num is 3
-            el.find('.row').not('.row-3, .row-4').find('.dot').removeClass 'fill'
-            el.find('.row-3').find('.dot').addClass 'fill'
-            el.find('.row-4').find('.dot').addClass 'fill'
-        else if num is 4
-            el.find('.row').not('.row-2').find('.dot').removeClass 'fill'
-            el.find('.row-2').find('.dot').addClass 'fill'
-        else if num is 5
-            el.find('.row').not('.row-2, .row-4').find('.dot').removeClass 'fill'
-            el.find('.row-2').find('.dot').addClass 'fill'
-            el.find('.row-4').find('.dot').addClass 'fill'
-        else if num is 6
-            el.find('.row').not('.row-2,.row-3').find('.dot').removeClass 'fill'
-            el.find('.row-2').find('.dot').addClass 'fill'
-            el.find('.row-3').find('.dot').addClass 'fill'
-        else if num is 7
-            el.find('.row').not('.row-2, .row-3, .row-4').find('.dot').removeClass 'fill'
-            el.find('.row-2').find('.dot').addClass 'fill'
-            el.find('.row-3').find('.dot').addClass 'fill'
-            el.find('.row-4').find('.dot').addClass 'fill'
-        else if num is 8
-            el.find('.row').not('.row-1').find('.dot').removeClass 'fill'
+        el.find('.dot').removeClass 'fill'
+        if num >= 32
             el.find('.row-1').find('.dot').addClass 'fill'
-        else if num is 9
-            el.find('.row').not('.row-1, .row-4').find('.dot').removeClass 'fill'
-            el.find('.row-1').find('.dot').addClass 'fill'
+            num-=32
+        if num >=16
+            el.find('.row-2').find('.dot').addClass 'fill'
+            num-=16
+        if num >=8
+            el.find('.row-3').find('.dot').addClass 'fill'
+            num-=8
+        if num >=4
             el.find('.row-4').find('.dot').addClass 'fill'
-
-    fillDots($('.col-1'), hPos1)
-    fillDots($('.col-2'), hPos2)
-    fillDots($('.col-3'), mPos1)
-    fillDots($('.col-4'), mPos2)
-    fillDots($('.col-5'), sPos1)
-    fillDots($('.col-6'), sPos2)
+            num-=4
+        if num >=2
+            el.find('.row-5').find('.dot').addClass 'fill'
+            num-=2
+        if num is 1
+            el.find('.row-6').find('.dot').addClass 'fill'
+       
+    fillDots($('.col-1'), hours)
+    fillDots($('.col-2'), minutes)
+    fillDots($('.col-3'), seconds)
 
 # Basic Style to center output
 style: """
-    top:15px;
-    left:15px;
+    bottom:190px;
+    left:10px;
+    
     * {
         box-sizing:border-box;
-    }
-    .container {
-        width:240px;
-        height:160px;
     }
     .col {
         float:left;
